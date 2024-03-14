@@ -115,6 +115,8 @@ $$
 <img src="./FSIpred/RegFile/USA_pred_line_graph.jpg">
 </p>
 
+![image](./FSIpred/RegFile/USA_pred_matrix.jpg)
+
 &emsp;&emsp;该模型的检验结果如下：<br>
 
 |指标|数值|
@@ -124,8 +126,6 @@ $$
 |MAE(Mean Absolute Error):|1.823222|
 |MRE(Mean Relative Error):|0.002045|
 |R-Square:|0.652785|
-
-
 
 #### 国家脆弱性指数变动-Policy Simulation
 &emsp;&emsp;为了模拟政策的冲击效果对国家脆弱性指数的影响，考虑将国家脆弱性指数建模到CGE模型中。<br>
