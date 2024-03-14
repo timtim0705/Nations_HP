@@ -111,9 +111,9 @@ $$
 
 &emsp;&emsp;以美国为例，该国国家脆弱性指数的预测结果如下：<br>
 
-![line graph]([FSIpred/RefFile/USA_pred_line_graph.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_line_graph.jpg)) 
-
-![pred data]([FSIpred/RefFile/USA_pred_matrix.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_matrix.jpg))
+<p align="center">
+<img src="./FSIpred/RegFile/USA_pred_line_graph.jpg">
+</p>
 
 &emsp;&emsp;该模型的检验结果如下：<br>
 
