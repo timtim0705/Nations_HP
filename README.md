@@ -78,7 +78,7 @@ $$
 #### 国家脆弱性指数预测-Baseline
 &emsp;&emsp;国家脆弱性指数（FSI）为年度数据，包含160多个国家自2006年至2023年的数据。为了构建国家策略模拟的baseline，需要对FSI在2024年至2030年的变化趋势进行预测。<br>
 &emsp;&emsp;由于[原始可获得数据](FSIpred/oridata/)存在样本较少、信息不完备等特征，故使用灰色预测法对其进行预测，相关代码保存在[FSI_prediction](FSIpred/FSI_prediction.ipynb)中。<br>
-&emsp;&emsp;GM(1,1)模型是一种...
+&emsp;&emsp;GM(1,1)模型是一种单变量的灰色预测模型，可以通过过少量的、不完全的信息，建立数据模型做出预测的一种预测方法。适用于非线性、非平稳的系统，在趋势分析方面有着广泛的应用。
 
 &emsp;&emsp;**GM(1,1)模型原理**：
 设有数列 $X^{\left( 0 \right)} \left( k \right)$ ，其一次累加生成数列为 $X^{\left( 1 \right)}$ :<br>
@@ -87,7 +87,7 @@ $$
 X^{\left( 1 \right)} \left( k \right)=\sum^{k}_{i=1}X^{\left( 0 \right)} \left( k \right) \left( k=1,2,...n \right)
 $$
 
-&emsp;&emsp;对$X^{\left( 1 \right)}$建立一阶线性微分方程，即GM(1,1)模型：<br>
+&emsp;&emsp;对 $X^{\left( 1 \right)}$ 建立一阶线性微分方程，即GM(1,1)模型：<br>
 
 $$
 \frac{dX^{\left( 1 \right)}}{dt}+aX^{\left( 1 \right)}=\mu
@@ -103,7 +103,7 @@ $$
 \left( k=1,2,...,n-1 \right)
 $$
 
-&emsp;&emsp;由于GM(1,1)模型得到的是一次累加量，则将$\hat{X}^{\left( 1 \right)} \left( k+1 \right)$经过累减还原为：<br>
+&emsp;&emsp;由于GM(1,1)模型得到的是一次累加量，则将 $\hat{X}^{\left( 1 \right)} \left( k+1 \right)$ 经过累减还原为：<br>
 
 $$
 \hat{X}^{\left( 0 \right)} \left( k+1 \right)=\left( e^{-\hat{a}} -1 \right) \left[ X^{\left( 0 \right)} \left( n \right) - \frac{\hat{\mu}}{\hat{a}} \right] e^{\hat{a}t}
@@ -111,8 +111,9 @@ $$
 
 &emsp;&emsp;以美国为例，该国国家脆弱性指数的预测结果如下：<br>
 
-<center>![line graph]([FSIpred/RefFile/USA_pred_line_graph.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_line_graph.jpg)) </center>
-<center>![pred data]([FSIpred/RefFile/USA_pred_matrix.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_matrix.jpg)) </center>
+![line graph]([FSIpred/RefFile/USA_pred_line_graph.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_line_graph.jpg)) 
+
+![pred data]([FSIpred/RefFile/USA_pred_matrix.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_matrix.jpg))
 
 &emsp;&emsp;该模型的检验结果如下：<br>
 
