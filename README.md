@@ -37,7 +37,7 @@ $$
 U_t = \left(\widetilde{C_t}\right)^{\alpha_1} \left(\widetilde{EC_t}\right)^{\alpha_2} \left(\widetilde{P_t}\right)^{\beta_1} \left(\widetilde{EP_t}\right)^{\beta_2}
 $$
 
-&emsp;&emsp;则在给定策略集合${\tau}$下的国家效用最大化可以表示为：<br>
+&emsp;&emsp;则在给定策略集合 ${\tau}$ 下的国家效用最大化可以表示为：<br>
 
 $$
 V_t = \mathop{Max}\limits_{\tau}U_t = \mathop{Max}\limits_{\tau}\left[\left(\widetilde{C_t}\right)^{\alpha_1}\left(\widetilde{EC_t}\right)^{\alpha_2}\left(\widetilde{P_t}\right)^{\beta_1}\left(\widetilde{EP_t}\right)^{\beta_2}\right]
@@ -73,38 +73,46 @@ $$
 &emsp;&emsp;社会动荡指数（Social Unrest Index，新版为Reported SUI）：月度数据，每6月一发布。由国际国币基金组织（IMF）研究人员根据相关媒体报道的数量提出。覆盖130个国家 — 经初步查找，仅公布了中东国家数据。<br>
 &emsp;&emsp;国家脆弱性指数（Fragile Status Index）：年度数据，由一个叫和平基金（FFP）的NGO公布。包含178个国家，每个国家获得一个FSI评分，并根据国家面临的影响其脆弱程度的不同压力进行排名。<br>
 &emsp;&emsp;国家全球jun力指数（Global Firepower Index）：年度数据。该指标来源于“全球火力网”，尽管其数据被部分网络媒体、研究学者引用，但在外网上，其可信度备受争议。该指标利用其独家计算公式，考虑60多种影响因子，将各国j事力量进行排名。在最新的2024年排名中，共有145个国家上榜。<br>
-&emsp;&emsp;由于社会动荡指数缺乏中美等经济体的数据，全球jun力指数可信度存在质疑，因此选取国家脆弱指数作为zz利益的衡量指标。但国家脆弱性指数只公布了2006年-2023年的数据，因此需要对未来指标的变化进行预测。
+&emsp;&emsp;由于社会动荡指数缺乏中美等经济体的数据，全球jun力指数可信度有存在质疑，因此选取国家脆弱指数作为zz利益的衡量指标。
 
 #### 国家脆弱性指数预测-Baseline
-&emsp;&emsp;国家脆弱性指数（FSI）为年度数据，包含160多个国家自2006年至2023年的数据。为了构建国家策略模拟的baseline，需要对FSI进行预测。本项目将预测2024年至2030年的策略影响效果。<br>
+&emsp;&emsp;国家脆弱性指数（FSI）为年度数据，包含160多个国家自2006年至2023年的数据。为了构建国家策略模拟的baseline，需要对FSI在2024年至2030年的变化趋势进行预测。<br>
 &emsp;&emsp;由于[原始可获得数据](FSIpred/oridata/)存在样本较少、信息不完备等特征，故使用灰色预测法对其进行预测，相关代码保存在[FSI_prediction](FSIpred/FSI_prediction.ipynb)中。<br>
 &emsp;&emsp;GM(1,1)模型是一种...
 
 &emsp;&emsp;**GM(1,1)模型原理**：
-设有数列$X^{\left( 0 \right)} \left( k \right)$。。
-设其一次累加生成数列为$X^{\left( 1 \right)}$<br>
+设有数列 $X^{\left( 0 \right)} \left( k \right)$ ，其一次累加生成数列为 $X^{\left( 1 \right)}$ :<br>
+
 $$
 X^{\left( 1 \right)} \left( k \right)=\sum^{k}_{i=1}X^{\left( 0 \right)} \left( k \right) \left( k=1,2,...n \right)
 $$
+
 &emsp;&emsp;对$X^{\left( 1 \right)}$建立一阶线性微分方程，即GM(1,1)模型：<br>
+
 $$
 \frac{dX^{\left( 1 \right)}}{dt}+aX^{\left( 1 \right)}=\mu
 $$
+
 &emsp;&emsp;解微分方程可以求得：<br>
+
 $$
 \hat{X}^{\left( 1 \right)} \left( k+1 \right)=\left[ X^{\left( 0 \right)} \left( 1 \right) - \frac{\mu}{a} \right] e^{-at} + \frac{\mu}{a}
 $$
+
 $$
 \left( k=1,2,...,n-1 \right)
 $$
+
 &emsp;&emsp;由于GM(1,1)模型得到的是一次累加量，则将$\hat{X}^{\left( 1 \right)} \left( k+1 \right)$经过累减还原为：<br>
+
 $$
 \hat{X}^{\left( 0 \right)} \left( k+1 \right)=\left( e^{-\hat{a}} -1 \right) \left[ X^{\left( 0 \right)} \left( n \right) - \frac{\hat{\mu}}{\hat{a}} \right] e^{\hat{a}t}
 $$
+
 &emsp;&emsp;以美国为例，该国国家脆弱性指数的预测结果如下：<br>
 
-<center>![折线图](FSIpred/RefFile/USA_pred_line_graph.jpg) </center>
-<center>![预测数据](FSIpred/RefFile/USA_pred_matrix.jpg) </center>
+<center>![line graph]([FSIpred/RefFile/USA_pred_line_graph.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_line_graph.jpg)) </center>
+<center>![pred data]([FSIpred/RefFile/USA_pred_matrix.jpg](https://github.com/timtim0705/Nations_HP/blob/main/FSIpred/RefFile/USA_pred_matrix.jpg)) </center>
 
 &emsp;&emsp;该模型的检验结果如下：<br>
 
@@ -120,6 +128,7 @@ $$
 
 #### 国家脆弱性指数变动-Policy Simulation
 &emsp;&emsp;为了模拟政策的冲击效果对国家脆弱性指数的影响，考虑将国家脆弱性指数建模到CGE模型中。<br>
+
 <center>To Do</center>
 
 
