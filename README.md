@@ -11,16 +11,18 @@ Nations' HP Evaluation
 
 ****
 ## 目录
-* [血量评估函数](#血量评估函数)
+* [国家效用函数](#国家效用函数)
 * [经济利益指标](#经济利益指标)
     * 国家经济指标选取
     * 经济指标权重决定
+    * 经济利益计算函数
 * [zz利益指标](#zz利益指标)
     * 国家zz利益指标
     * 国家脆弱性指数预测 
     * 国家脆弱性指数变动 
+* [最终血量函数](#最终血量函数)
 
-### 血量评估函数
+### 国家效用函数
 -------------
 &emsp;&emsp;基于Cobb-Douglas函数形式，将国家效用定义为当期相对经济利益、预期相对经济利益、当期相对zz利益和预期相对zz利益四个部分不同权重（国家偏好）情况下的加总：<br>
 
@@ -62,7 +64,19 @@ $$
 |进/出口额|%变化|进/出口额|
 
 #### 经济指标权重决定
-<center>To Do</center>
+&emsp;&emsp;CGE模型的众多预测变量具有不同的量纲，首先需要对其进行无量纲化处理。根据成本型指标和效益型指标不同的转换公式对其进行压缩。
+&emsp;&emsp;**（1）变异系数法**
+&emsp;&emsp;特点：根据各变量对结果的影响程度对指标进行打分，相对客观，且能根据策略的不同进行灵活调整，但可靠性较差。
+
+
+&emsp;&emsp;**（2）层次分析法**
+&emsp;&emsp;特点：让专家根据知识和经验对指标进行打分，相对主管，不能根据生成策略的不同进行及时调整，但可靠性较高。
+
+
+#### 经济利益计算函数
+<p align="center">
+To Do
+</p>
 
 
 ### zz利益指标
@@ -109,29 +123,33 @@ $$
 \hat{X}^{\left( 0 \right)} \left( k+1 \right)=\left( e^{-\hat{a}} -1 \right) \left[ X^{\left( 0 \right)} \left( n \right) - \frac{\hat{\mu}}{\hat{a}} \right] e^{\hat{a}t}
 $$
 
-&emsp;&emsp;以美国为例，该国国家脆弱性指数的预测结果如下：<br>
+&emsp;&emsp;以美国和中国为例，国家脆弱性指数的预测结果如下：<br>
 
 <p align="center">
-<img src="./FSIpred/RegFile/USA_pred_line_graph.jpg">
+<img src="FSIpred/RegFile/USA_pred_line_graph.jpg">
 </p>
 
-![image](./FSIpred/RegFile/USA_pred_matrix.jpg)
+![image](FSIpred/RegFile/CHN_pred_line.jpg)
 
 &emsp;&emsp;该模型的检验结果如下：<br>
 
-|指标|数值|
-|:--:|:--:|
-|MSE(Mean Square Error):|4.519503|
-|RMSE(Root Mean Square Error):|2.125912|
-|MAE(Mean Absolute Error):|1.823222|
-|MRE(Mean Relative Error):|0.002045|
-|R-Square:|0.652785|
+|指标|美国模型|中国模型|
+|:--:|:--:|:--:|
+|MSE(Mean Square Error):|4.519503|3.197299|
+|RMSE(Root Mean Square Error):|2.125912|1.788099|
+|MAE(Mean Absolute Error):|1.823222|1.354114|
+|MRE(Mean Relative Error):|0.002045|0.000685|
+|R-Square:|0.652785|0.891409|
 
 #### 国家脆弱性指数变动-Policy Simulation
 &emsp;&emsp;为了模拟政策的冲击效果对国家脆弱性指数的影响，考虑将国家脆弱性指数建模到CGE模型中。<br>
 
-<center>To Do</center>
+<p align="center">
+To Do
+</p>
 
-
-
-
+### 最终血量函数
+-------------
+<p align="center">
+To Do
+</p>

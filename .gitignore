@@ -1,0 +1,8 @@
+EconUtility/.ipynb_checkpoints/
+EconUtility/__pycache__/
+EconUtility/*.exe
+EconUtility/__init__.py
+*.log
+*.map
+*.sl4
+*.seq
