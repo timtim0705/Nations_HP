@@ -1,29 +1,96 @@
-Nations' HP Evaluation
+PyCGE and Nations' HP Evaluation
 ==================================
 
-&emsp;&emsp;本项目旨在利用CGE模型推演经济体在执行策略后的经济收益，并与zz收益相结合，以期实现大国冲突模式下的血量评估。
+*Objectives*
+- Develop a `Python` based optimization modeling workflow for solving linear & nonlinear programming problems, e.g., `CGE`;<br>
+- Provide a method to evaluate gains and losses as a single value for policy simulations. 
 
-****
 
-|作者|wt|
-|:---|:--:|
-|更新日期|2024.3.13|
+*Contents*
+>[Py-IO model](#py-io-model)
+>>[IO Model](#io-model)<br>
+>>[A Python Based IO Model](#a-python-based-io-model)
 
-****
-## 目录
-* [国家效用函数](#国家效用函数)
-* [经济利益指标](#经济利益指标)
-    * 国家经济指标选取
-    * 经济指标权重决定
-    * 经济利益计算函数
-* [zz利益指标](#zz利益指标)
-    * 国家zz利益指标
-    * 国家脆弱性指数预测 
-    * 国家脆弱性指数变动 
-* [最终血量函数](#最终血量函数)
+>[PyCGE Workflow](#pycge-workflow)
 
-### 国家效用函数
--------------
+>[Nation Utility Function](#nation-utility-function)
+>>[Economic Interests](#economic-interests)<br>
+>>[Political Interests](#political-interests)
+
+>[HP Function](#hp-function)
+
+--------------
+
+### Py-IO model
+
+#### IO Model
+Input-Output table represents the ecomony in a matrix form. Here, a single nation IO table from National Bureau of Statistics of China is introduced to model the relationship between input and output among 153 industries. 
+
+A Leontief model:
+
+Let 
+
+```math
+Z = \begin{bmatrix}
+z_{11} & \dots & z_{1n}\\
+\vdots & \ddots & \vdots\\
+z_{n1} & \dots & z_{nn}\\
+\end{bmatrix},\: 
+F = \begin{bmatrix}
+f_{11} & \dots & f_{1n}\\
+\vdots & \ddots & \vdots\\
+f_{n1} & \dots & f_{nn}\\
+\end{bmatrix},\: 
+M = \begin{bmatrix} 
+m_{1}\\ \vdots\\ m_{n} 
+\end{bmatrix},\:
+Q = \begin{bmatrix} 
+q_{1}\\ \vdots\\ q_{n} 
+\end{bmatrix}
+```
+
+where $Z$ is a matrix of intermediate use of inputs, with columns (*j*) representing inputs and rows (*i*) representing outputs, $F$ is a matrix of final demands, including private households and Government final consumption, gross fixed capital formation, changes in inventories and valuables, exports, et cl. $M$ and $Q$ are column vectors representing the import and the output of each sector. 
+
+The direct consumption coefficients are given by $a_{ij} = z_{ij}/Q_{j}$.
+
+```math
+A = \begin{bmatrix}
+a_{11} & \dots & a_{1n}\\
+\vdots & a_{ij} & \vdots\\
+a_{n1} & \dots & a_{nn}\\
+\end{bmatrix},\: 
+```
+Given that sector inputs are equal to sector outputs, output can be represented as
+
+```math
+\begin{equation} 
+Q = AQ + F - M
+\end{equation} 
+```
+
+It follows that 
+
+```math
+f = Q + M - AQ = (I - A)Q + M \Rightarrow Q = (I - A)^{-1}(F - M)
+```
+Here, $(I - A)^{-1}$ is the so-called Leontief inverse.
+
+#### A Python Based IO Model
+
+Requirements: `python-3.x` <br>
+
+Packages:<br>
+~~`Pyomo`: a Python-based open-source software package that supports a diverse set of optimization capabilities for formulating, solving, and analyzing optimization models.~~<br>
+
+
+
+
+### PyCGE Workflow
+<p align="center">
+TODO
+</p>
+
+### Nation Utility Function
 &emsp;&emsp;基于Cobb-Douglas函数形式，将国家效用定义为当期相对经济利益、预期相对经济利益、当期相对zz利益和预期相对zz利益四个部分不同权重（国家偏好）情况下的加总：<br>
 
 $$
@@ -50,10 +117,9 @@ h:\tau \rightarrow \{(\widetilde{C_t}),(\widetilde{EC_t}),(\widetilde{P_t}),(\wi
 $$
 <br/>
 
-### 经济利益指标
--------------
+#### Economic Interests
 
-#### 国家经济指标选取
+##### 国家经济指标选取
 
 &emsp;&emsp;给定策略对经济利益指标的影响由CGE模型给出，初步确定为：<br>
 |指标名称|单位|意义|
@@ -61,27 +127,26 @@ $$
 |GDP|%变化|国民生产总值，是一个国家（地区）所有常住单位在一定时期内生产活动的最终成果，是国民经济的核心指标，也是衡量一个国家或地区经济状况和发展水平的重要指标。|
 |社会福利|百万美元|CGE中的社会福利采用希克斯等价变差来表征，以政策实施前的商品价格为基础，测算居民在政策实施后的效用水平的变化情况。变动为正，说明居民福利在政策实施后得到改善，反之表示政策实施将损害居民福利。|
 |贸易平衡|百万美元|衡量贸易逆差或顺差的大小。|
-|进/出口额|%变化|进/出口额|
+|进/出口额|%变化|进/出口额。|
 
-#### 经济指标权重决定
-&emsp;&emsp;CGE模型的众多预测变量具有不同的量纲，首先需要对其进行无量纲化处理。根据成本型指标和效益型指标不同的转换公式对其进行压缩。
-&emsp;&emsp;**（1）变异系数法**
-&emsp;&emsp;特点：根据各变量对结果的影响程度对指标进行打分，相对客观，且能根据策略的不同进行灵活调整，但可靠性较差。
-
-
-&emsp;&emsp;**（2）层次分析法**
-&emsp;&emsp;特点：让专家根据知识和经验对指标进行打分，相对主管，不能根据生成策略的不同进行及时调整，但可靠性较高。
+##### 经济指标权重决定
+&emsp;&emsp;CGE模型的众多预测变量具有不同的量纲，首先需要对其进行无量纲化处理。根据成本型指标和效益型指标不同的转换公式对其进行压缩。<br>
+&emsp;&emsp;**（1）变异系数法**<br>
+&emsp;&emsp;特点：根据各变量对结果的影响程度对指标进行打分，相对客观，且能根据策略的不同进行灵活调整，但可靠性较差。<br>
 
 
-#### 经济利益计算函数
+&emsp;&emsp;**（2）层次分析法**<br>
+&emsp;&emsp;特点：让专家根据知识和经验对指标进行打分，相对主管，不能根据生成策略的不同进行及时调整，但可靠性较高。<br>
+
+
+##### 经济利益计算函数
 <p align="center">
-To Do
+TODO
 </p>
 
 
-### zz利益指标
--------------
-#### 国家zz利益指标
+#### Political Interests
+##### 国家zz利益指标
 
 &emsp;&emsp;可考虑的指标有：<br>
 &emsp;&emsp;社会动荡指数（Social Unrest Index，新版为Reported SUI）：月度数据，每6月一发布。由国际国币基金组织（IMF）研究人员根据相关媒体报道的数量提出。覆盖130个国家 — 经初步查找，仅公布了中东国家数据。<br>
@@ -89,7 +154,7 @@ To Do
 &emsp;&emsp;国家全球jun力指数（Global Firepower Index）：年度数据。该指标来源于“全球火力网”，尽管其数据被部分网络媒体、研究学者引用，但在外网上，其可信度备受争议。该指标利用其独家计算公式，考虑60多种影响因子，将各国j事力量进行排名。在最新的2024年排名中，共有145个国家上榜。<br>
 &emsp;&emsp;由于社会动荡指数缺乏中美等经济体的数据，全球jun力指数可信度有存在质疑，因此选取国家脆弱指数作为zz利益的衡量指标。
 
-#### 国家脆弱性指数预测-Baseline
+##### 国家脆弱性指数预测-Baseline
 &emsp;&emsp;国家脆弱性指数（FSI）为年度数据，包含160多个国家自2006年至2023年的数据。为了构建国家策略模拟的baseline，需要对FSI在2024年至2030年的变化趋势进行预测。<br>
 &emsp;&emsp;由于[原始可获得数据](FSIpred/oridata/)存在样本较少、信息不完备等特征，故使用灰色预测法对其进行预测，相关代码保存在[FSI_prediction](FSIpred/FSI_prediction.ipynb)中。<br>
 &emsp;&emsp;GM(1,1)模型是一种单变量的灰色预测模型，可以通过过少量的、不完全的信息，建立数据模型做出预测的一种预测方法。适用于非线性、非平稳的系统，在趋势分析方面有着广泛的应用。
@@ -141,15 +206,14 @@ $$
 |MRE(Mean Relative Error):|0.002045|0.000685|
 |R-Square:|0.652785|0.891409|
 
-#### 国家脆弱性指数变动-Policy Simulation
+##### 国家脆弱性指数变动-Policy Simulation
 &emsp;&emsp;为了模拟政策的冲击效果对国家脆弱性指数的影响，考虑将国家脆弱性指数建模到CGE模型中。<br>
 
 <p align="center">
-To Do
+TODO
 </p>
 
-### 最终血量函数
--------------
+### HP Function
 <p align="center">
-To Do
+TODO
 </p>
