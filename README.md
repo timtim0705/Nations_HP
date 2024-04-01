@@ -9,9 +9,10 @@ PyCGE and Nations' HP Evaluation
 *Contents*
 >[Py-IO model](#py-io-model)
 >>[IO Model](#io-model)<br>
->>[A Python Based IO Model](#a-python-based-io-model)
+>>[A Python Based IO Model Simulation](#a-python-based-io-model-simulation)
 
 >[PyCGE Workflow](#pycge-workflow)
+>>[A Python Based CGE Model](#a-python-based-cge-model)
 
 >[Nation Utility Function](#nation-utility-function)
 >>[Economic Interests](#economic-interests)<br>
@@ -37,9 +38,9 @@ z_{11} & \dots & z_{1n}\\
 z_{n1} & \dots & z_{nn}\\
 \end{bmatrix},\: 
 F = \begin{bmatrix}
-f_{11} & \dots & f_{1n}\\
+f_{11} & \dots & f_{1m}\\
 \vdots & \ddots & \vdots\\
-f_{n1} & \dots & f_{nn}\\
+f_{n1} & \dots & f_{nm}\\
 \end{bmatrix},\: 
 M = \begin{bmatrix} 
 m_{1}\\ \vdots\\ m_{n} 
@@ -60,7 +61,7 @@ a_{11} & \dots & a_{1n}\\
 a_{n1} & \dots & a_{nn}\\
 \end{bmatrix},\: 
 ```
-Given that sector inputs are equal to sector outputs, output can be represented as
+Given that sector inputs are equal to sector outputs, output value distribution can be represented as a system of linear equations
 
 ```math
 \begin{equation} 
@@ -71,11 +72,26 @@ Q = AQ + F - M
 It follows that 
 
 ```math
-f = Q + M - AQ = (I - A)Q + M \Rightarrow Q = (I - A)^{-1}(F - M)
+F = Q + M - AQ = (I - A)Q + M \Rightarrow Q = (I - A)^{-1}(F - M)
 ```
 Here, $(I - A)^{-1}$ is the so-called Leontief inverse.
 
-#### A Python Based IO Model
+2 forms of the IO-row model:
+
+- sales ------> production prospect:
+
+$$
+Q = \left( I - A \right)^{-1} \left( F - M \right)
+$$
+
+- production ------> sales prospects:
+
+$$
+F = \left( I - A \right) Q + M 
+$$
+
+
+#### A Python Based IO Model Simulation
 
 Requirements: `python-3.x` <br>
 
@@ -86,12 +102,14 @@ Packages:<br>
 
 
 ### PyCGE Workflow
+
+#### A Python Based CGE Model
 <p align="center">
 TODO
 </p>
 
 ### Nation Utility Function
-&emsp;&emsp;基于Cobb-Douglas函数形式，将国家效用定义为当期相对经济利益、预期相对经济利益、当期相对zz利益和预期相对zz利益四个部分不同权重（国家偏好）情况下的加总：<br>
+Based on the form of Cobb-Douglas function, national utility is defined as the summation of 4 reletive benefits with different weights(national preference):  current economic relative benefit, expected economic r.b., current political r.b., and expected political r.b.<br>
 
 $$
 U_t = \left(\frac{C_t} {C_t^{ * }}\right) ^ {\alpha_1} 
@@ -100,13 +118,13 @@ U_t = \left(\frac{C_t} {C_t^{ * }}\right) ^ {\alpha_1}
 \lbrace\frac{1}{N}\sum_{s=1}^N\rho_P^s\left[E_t\frac{P_{t+s}}{P_{t+s}^{ * }}\right]\rbrace^{\beta_2}
 $$
 
-&emsp;&emsp;上式可简化为：<br>
+which can be simplified to<br>
 
 $$
 U_t = \left(\widetilde{C_t}\right)^{\alpha_1} \left(\widetilde{EC_t}\right)^{\alpha_2} \left(\widetilde{P_t}\right)^{\beta_1} \left(\widetilde{EP_t}\right)^{\beta_2}
 $$
 
-&emsp;&emsp;则在给定策略集合 ${\tau}$ 下的国家效用最大化可以表示为：<br>
+Thus, the maximum national utility on a given set ${\tau}$ of strategies is <br>
 
 $$
 V_t = \mathop{Max}\limits_{\tau}U_t = \mathop{Max}\limits_{\tau}\left[\left(\widetilde{C_t}\right)^{\alpha_1}\left(\widetilde{EC_t}\right)^{\alpha_2}\left(\widetilde{P_t}\right)^{\beta_1}\left(\widetilde{EP_t}\right)^{\beta_2}\right]
@@ -119,15 +137,14 @@ $$
 
 #### Economic Interests
 
-##### 国家经济指标选取
-
-&emsp;&emsp;给定策略对经济利益指标的影响由CGE模型给出，初步确定为：<br>
-|指标名称|单位|意义|
+The economic benefits of a given strategy is generated from the CGE model, evaluated by the following variables.
+<br>
+|Variables|Unit|Description|
 |:--:|:--:|:---|
-|GDP|%变化|国民生产总值，是一个国家（地区）所有常住单位在一定时期内生产活动的最终成果，是国民经济的核心指标，也是衡量一个国家或地区经济状况和发展水平的重要指标。|
-|社会福利|百万美元|CGE中的社会福利采用希克斯等价变差来表征，以政策实施前的商品价格为基础，测算居民在政策实施后的效用水平的变化情况。变动为正，说明居民福利在政策实施后得到改善，反之表示政策实施将损害居民福利。|
-|贸易平衡|百万美元|衡量贸易逆差或顺差的大小。|
-|进/出口额|%变化|进/出口额。|
+|GDP|%change|国民生产总值，是一个国家（地区）所有常住单位在一定时期内生产活动的最终成果，是国民经济的核心指标，也是衡量一个国家或地区经济状况和发展水平的重要指标。|
+|Social Welfare(EV)|million dollars|CGE中的社会福利采用希克斯等价变差来表征，以政策实施前的商品价格为基础，测算居民在政策实施后的效用水平的变化情况。变动为正，说明居民福利在政策实施后得到改善，反之表示政策实施将损害居民福利。|
+|Balance of Trade|million dollars|衡量贸易逆差或顺差的大小。|
+|Import/Export|%change|进/出口额。|
 
 ##### 经济指标权重决定
 &emsp;&emsp;CGE模型的众多预测变量具有不同的量纲，首先需要对其进行无量纲化处理。根据成本型指标和效益型指标不同的转换公式对其进行压缩。<br>
@@ -146,7 +163,6 @@ TODO
 
 
 #### Political Interests
-##### 国家zz利益指标
 
 &emsp;&emsp;可考虑的指标有：<br>
 &emsp;&emsp;社会动荡指数（Social Unrest Index，新版为Reported SUI）：月度数据，每6月一发布。由国际国币基金组织（IMF）研究人员根据相关媒体报道的数量提出。覆盖130个国家 — 经初步查找，仅公布了中东国家数据。<br>
